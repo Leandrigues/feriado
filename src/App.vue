@@ -2,11 +2,13 @@
   <div class="container">
     <div class="header">O próximo feriado nacional é...</div>
     <div class="holiday">{{ formattedDate }} - {{ formattedTitle }}</div>
-    
+    {{ nextHoliday }}
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 
 export default {
   name: 'App',
@@ -18,9 +20,30 @@ export default {
         date: '2022-01-01',
         title: 'Corpus Christi'
       },
+      token: '3058|bfBc3asxUIB7IuWjgwU5FtHeNJndxfLP',
+      base_url: 'https://api.invertexto.com/v1/holidays/2023?token=',
+      holidays_list: []
     }
+  }, 
+  beforeMount() {
+    axios.get(`${this.base_url}${this.token}`).then((response) => {
+      this.holidays_list = response.data
+   })
   },
   computed: {
+    nextHoliday() {
+      let nextHoliday;
+      const current_date = new Date()
+      this.holidays_list.forEach((holiday) => {
+        const date = new Date(holiday.date)
+        if (date >= current_date) {
+          nextHoliday = holiday
+          return;
+        }
+      });
+
+      return nextHoliday;
+    },
     formattedTitle() {
       return this.holiday.title
     },
