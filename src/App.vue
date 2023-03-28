@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <div class="header">O próximo feriado nacional é...</div>
-    <div class="holiday">{{ formattedDate }} - {{ formattedTitle }}</div>
-    {{ nextHoliday }}
+    <div class="holiday" v-if="nextHoliday">{{ formattedDate }} - {{ formattedTitle }}</div>
   </div>
 </template>
 
@@ -22,36 +21,30 @@ export default {
       },
       token: '3058|bfBc3asxUIB7IuWjgwU5FtHeNJndxfLP',
       base_url: 'https://api.invertexto.com/v1/holidays/2023?token=',
-      holidays_list: []
+      nextHoliday: undefined
     }
   }, 
   beforeMount() {
     axios.get(`${this.base_url}${this.token}`).then((response) => {
-      this.holidays_list = response.data
+      const holidaysList = response.data
+      const current_date = new Date()
+
+      this.nextHoliday = holidaysList.find((holiday) => {
+        const date = new Date(holiday.date)
+        return date >= current_date
+      })
    })
   },
   computed: {
-    nextHoliday() {
-      let nextHoliday;
-      const current_date = new Date()
-      this.holidays_list.forEach((holiday) => {
-        const date = new Date(holiday.date)
-        if (date >= current_date) {
-          nextHoliday = holiday
-          return;
-        }
-      });
-
-      return nextHoliday;
-    },
     formattedTitle() {
-      return this.holiday.title
+      return this.nextHoliday.name
     },
     formattedDate() {
       return this.formattedDay + ' de ' + this.formattedMonth
     },
     formattedDay() {
-      const day = this.holiday.date.split('-')[2]
+      console.log('Computed')
+      const day = this.nextHoliday.date.split('-')[2]
       return day;
     },
     formattedMonth() {
@@ -69,7 +62,7 @@ export default {
         "Novembro",
         "Dezembro"
       ]
-      const month = this.holiday.date.split('-')[1]
+      const month = this.nextHoliday.date.split('-')[1]
 
       return months[parseInt(month) - 1]
     }
