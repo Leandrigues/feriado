@@ -1,7 +1,9 @@
 <template>
-  <div class="container">
-    <div class="header">O próximo feriado nacional é...</div>
-    <div class="holiday" v-if="nextHoliday">{{ formattedDate }} - {{ formattedTitle }}</div>
+  <div class="background" :style="{background: `linear-gradient(70deg, ${palettes[selectedColor].primary} 0%, ${palettes[selectedColor].secondary} 70%)`, color: palettes[selectedColor].text }">
+    <div class="container">
+      <div class="header">O próximo feriado nacional é...</div>
+      <div class="holiday" v-if="nextHoliday">{{ formattedDate }} - {{ formattedTitle }}</div>
+    </div>
   </div>
 </template>
 
@@ -21,7 +23,41 @@ export default {
       },
       token: '3058|bfBc3asxUIB7IuWjgwU5FtHeNJndxfLP',
       base_url: 'https://api.invertexto.com/v1/holidays/2023?token=',
-      nextHoliday: undefined
+      nextHoliday: undefined,
+      palettes: [
+        {
+          primary:'#F79272',
+          secondary: '#B589B4',
+          text: '#FBFBFB'
+        },
+        {
+          primary:'#8447FF',
+          secondary: '#D972FF',
+          text: '#FBFBFB'
+        },
+        {
+          primary:'#a524fe',
+          secondary: '#125d84',
+          text: '#FBFBFB'
+        },
+        {
+          primary:'#1df495',
+          secondary: '#7405a6',
+          text: '#FBFBFB'
+        },
+        {
+          primary:'#64a1b9',
+          secondary: '#f340dc',
+          text: '#FBFBFB'
+        },
+        {
+          primary:'#3fc9b9',
+          secondary: '#b2f70c ',
+          text: '#FBFBFB'
+        },
+      ],
+      selectedColor: Math.ceil(((Math.random() * 100) % 5) - 1) 
+
     }
   }, 
   beforeMount() {
@@ -88,6 +124,15 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%;
+}
+
+.background {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
 }
 
 .container {
