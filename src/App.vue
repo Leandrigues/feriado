@@ -18,8 +18,8 @@ export default {
   data() {
     return {
       holiday: {
-        date: '2022-01-01',
-        title: 'Corpus Christi'
+        date: '',
+        title: ''
       },
       token: '3058|bfBc3asxUIB7IuWjgwU5FtHeNJndxfLP',
       base_url: 'https://api.invertexto.com/v1/holidays/2023?token=',
@@ -147,5 +147,21 @@ body, html {
 
 .holiday {
   font-size: 4rem;
+}
+
+@media (max-width: 800px) {
+  .container {
+    text-align: center;
+    justify-content: center;
+    font-size: 0.1rem!important;
+  }
+
+  .header {
+    font-size: 1rem;
+  }
+
+  .holiday {
+    font-size: 2.5rem;
+  }
 }
 </style>
