@@ -1,15 +1,15 @@
 <template>
   <div class="background" :style="{background: `linear-gradient(70deg, ${palettes[selectedColor].primary} 0%, ${palettes[selectedColor].secondary} 70%)`, color: palettes[selectedColor].text }">
     <div class="container">
-      <div class="header">O próximo feriado nacional é...</div>
+      <div class="header">O próximo feriado nacional é <strong class="week-day">sexta-feira</strong>...</div>
       <div class="holiday" v-if="nextHoliday">{{ formattedDate }} - {{ formattedTitle }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
+import json from './data/holidays.json'
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -21,8 +21,7 @@ export default {
         date: '',
         title: ''
       },
-      token: '3058|bfBc3asxUIB7IuWjgwU5FtHeNJndxfLP',
-      base_url: 'https://api.invertexto.com/v1/holidays/2023?token=',
+      holidays: json,
       nextHoliday: undefined,
       palettes: [
         {
@@ -33,11 +32,6 @@ export default {
         {
           primary:'#8447FF',
           secondary: '#D972FF',
-          text: '#FBFBFB'
-        },
-        {
-          primary:'#a524fe',
-          secondary: '#125d84',
           text: '#FBFBFB'
         },
         {
@@ -61,15 +55,14 @@ export default {
     }
   }, 
   beforeMount() {
-    axios.get(`${this.base_url}${this.token}`).then((response) => {
-      const holidaysList = response.data
+
+      const holidaysList = this.holidays
       const current_date = new Date()
 
       this.nextHoliday = holidaysList.find((holiday) => {
         const date = new Date(holiday.date)
         return date >= current_date
       })
-   })
   },
   computed: {
     formattedTitle() {
@@ -101,6 +94,17 @@ export default {
       const month = this.nextHoliday.date.split('-')[1]
 
       return months[parseInt(month) - 1]
+    },
+    formattedWeekDay() {
+      return [
+        "Domingo",
+        "Segunda-feira",
+        "Terça-feira",
+        "Quarta-feira",
+        "Quinta-feira",
+        "Sexta-feira",
+        "Sábado"
+      ]
     }
   }
 }
