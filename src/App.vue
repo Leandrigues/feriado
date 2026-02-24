@@ -1,16 +1,16 @@
 <template>
-  <div
-    class="background"
-    :style="{
-      background: `linear-gradient(70deg, ${palettes[selectedColor].primary} 0%, ${palettes[selectedColor].secondary} 70%)`,
-      color: palettes[selectedColor].text,
-    }"
-  >
+  <div class="background" :style="{
+    background: `linear-gradient(
+  135deg,
+  ${palettes[selectedColor].primary} 0%,
+  ${palettes[selectedColor].secondary} 100%
+)`,
+    color: palettes[selectedColor].text,
+  }">
     <div class="container">
       <div class="header">
         O próximo feriado nacional é
-        <strong class="week-day">{{ formattedWeekday }}</strong
-        >...
+        <strong class="week-day">{{ formattedWeekday }}</strong>...
       </div>
       <div class="holiday" v-if="nextHoliday">
         {{ formattedDate }} - {{ formattedTitle }}
@@ -21,7 +21,6 @@
 
 <script>
 import json from "./data/holidays.json";
-import axios from "axios";
 
 export default {
   name: "App",
@@ -36,25 +35,65 @@ export default {
       nextHoliday: undefined,
       palettes: [
         {
-          primary: "#8447FF",
-          secondary: "#D972FF",
-          text: "#FBFBFB",
+          primary: "#5E60CE",
+          secondary: "#64DFDF",
+          text: "#F8F9FA",
         },
         {
-          primary: "#1df495",
-          secondary: "#7405a6",
-          text: "#FBFBFB",
+          primary: "#4C6EF5",
+          secondary: "#A5D8FF",
+          text: "#F8F9FA",
         },
         {
-          primary: "#64a1b9",
-          secondary: "#f340dc",
-          text: "#FBFBFB",
+          primary: "#7C83FD",
+          secondary: "#CDB4DB",
+          text: "#FFFFFF",
         },
+        {
+          primary: "#4361EE",
+          secondary: "#4895EF",
+          text: "#F1F3F5",
+        },
+        {
+          primary: "#3A5A40",
+          secondary: "#A3B18A",
+          text: "#F6F7EB",
+        },
+        {
+          primary: "#6D597A",
+          secondary: "#B56576",
+          text: "#FAF9F9",
+        },
+        {
+          primary: "#355070",
+          secondary: "#6D597A",
+          text: "#F1FAEE",
+        },
+        {
+          primary: "#3F72AF",
+          secondary: "#DBE2EF",
+          text: "#112D4E",
+        },
+        {
+          primary: "#588157",
+          secondary: "#A3B18A",
+          text: "#F1FAEE",
+        },
+        {
+          primary: "#2B5876",
+          secondary: "#4E4376",
+          text: "#F8F9FA",
+        }
       ],
-      selectedColor: Math.ceil(((Math.random() * 100) % 3) - 1),
+      selectedColor: Math.ceil(((Math.random() * 100) % 10) - 1),
     };
   },
   beforeMount() {
+    this.holidays.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateA - dateB;
+    })
     const holidaysList = this.holidays;
     const current_date = new Date();
 
@@ -113,11 +152,10 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', sans-serif!important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   display: flex;
   align-items: center;
   height: 100%;
